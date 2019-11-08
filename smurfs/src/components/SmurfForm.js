@@ -1,41 +1,52 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { FETCH_SUCCESS, FETCH_FAILURE } from '../actions';
+import { connect } from 'react-redux';
+import { addSmurf } from '../actions';
 
-const SmurfForm = () => {
-    const [smurfy, setSmurfy] = useState('');
+const SmurfForm = props => {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [height, setHeight] = useState('');
 
-    const changeHandler = event => {
-        setSmurfy(event.target.value);
+    const nameChangeHandler = event => {
+        setName(event.target.value);
     };
 
-    const handleSubmit = () => dispatch => {
-        dispatch({ type: 'ADD_SMURFY' })
-        axios
-            .post('http://localhost:3333/smurfs')
-            .then(res => dispatch({ type: FETCH_SUCCESS, payload: res.data }))
-            .catch(err => dispatch({ type: FETCH_FAILURE, payload: err.response }));
+    const ageChangeHandler = event => {
+        setAge(event.target.value);
+    };
+
+    const heightChangeHandler = event => {
+        setHeight(event.target.value);
+    };
+
+    const submitHandler = event => {
+        let newSmurf = {
+            name: name,
+            age: age,
+            height: height
+        }
+        props.addSmurf(newSmurf)
     };
 
     return (
         <div className="smurf-form">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={submitHandler}>
                 <input
-                    value={smurfy.name}
+                    value={name}
                     placeholder="Smurf Name"
-                    onChange={changeHandler} />
+                    onChange={nameChangeHandler} />
                 <input
-                    value={smurfy.age}
+                    value={age}
                     placeholder="Smurf Age"
-                    onChange={changeHandler} />
+                    onChange={ageChangeHandler} />
                 <input
-                    value={smurfy.height}
+                    value={height}
                     placeholder="Smurf Height"
-                    onChange={changeHandler} />
+                    onChange={heightChangeHandler} />
                 <button>Smurf a New Smurf</button>
             </form>
         </div>
     );
 }
 
-export default SmurfForm;
+export default connect(null, { addSmurf })(SmurfForm);

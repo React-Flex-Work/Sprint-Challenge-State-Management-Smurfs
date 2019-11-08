@@ -14,9 +14,9 @@ const GetSmurf = props => {
     return (
         <div>
             {props.error && <p>{props.error}</p>}
-            {props.getSmurf.map(smurf => (
-                <Smurf key={smurf.id} smurf={smurf} />
-            ))}
+            {props.getSmurf.map(smurf =>
+                <Smurf key={smurf.id} name={smurf.name} age={smurf.age} height={smurf.height} />
+            )}
         </div>
     )
 }
